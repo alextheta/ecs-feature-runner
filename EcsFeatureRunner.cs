@@ -3,14 +3,19 @@ using Te.EcsFeatureRunner.Feature;
 
 namespace Te.EcsFeatureRunner
 {
-    public class EcsFeatureRunner : IEcsFeatureRunner
+    public abstract class EcsFeatureRunner : IEcsFeatureRunner
     {
         private List<IEcsInitFeature> _initFeatures;
         private List<IEcsUpdateFeature> _updateFeatures;
         private List<IEcsPhysicsUpdateFeature> _physicsUpdateFeatures;
         private List<IEcsDestroyFeature> _destroyFeatures;
 
-        public IEcsFeatureRunner AddFeature<T>(T feature) where T : class, IEcsFeature
+        public virtual IEcsFeatureRunner AddFeature<T>() where T : class, IEcsFeature, new()
+        {
+            return AddFeature(new T());
+        }
+
+        public virtual IEcsFeatureRunner AddFeature<T>(T feature) where T : class, IEcsFeature
         {
             if (feature is IEcsInitFeature initFeature)
             {
@@ -39,7 +44,7 @@ namespace Te.EcsFeatureRunner
             return this;
         }
 
-        public void Init()
+        public virtual void Init()
         {
             if (_initFeatures == null)
             {
@@ -52,7 +57,7 @@ namespace Te.EcsFeatureRunner
             }
         }
 
-        public void Update()
+        public virtual void Update()
         {
             if (_updateFeatures == null)
             {
@@ -65,7 +70,7 @@ namespace Te.EcsFeatureRunner
             }
         }
 
-        public void PhysicsUpdate()
+        public virtual void PhysicsUpdate()
         {
             if (_physicsUpdateFeatures == null)
             {
@@ -78,7 +83,7 @@ namespace Te.EcsFeatureRunner
             }
         }
 
-        public void Destroy()
+        public virtual void Destroy()
         {
             if (_destroyFeatures == null)
             {

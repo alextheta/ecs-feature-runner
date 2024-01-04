@@ -2,13 +2,19 @@
 It happend that way that grouping ECS system sets by so-called 'features' considered a good practice to organize your code to make it more scalable and maintainable. Unfortunately, some ECS frameworks are lacking of this must-have feature, so this tiny project is aims to solve this issue
 
 ## Getting started with `EscFeatureRunner`
-1. Begin by creating an instance of the `EcsFeatureRunner` class:
+1. First of all, you need to implement the `IEcsFeatureRunner` interface. An easy way to do that is to derive from the `EcsFeatureRunner` abstract class, which already implements `IEcsFeatureRunner` and contains all the basic functionality:
 ```csharp
+public class MyFeatureRunner : EcsFeatureRunner
+{
+}
+
+...
+
 private IEcsFeatureRunner _featureRunner;
 
 ...
 
-_featureRunner = new EcsFeatureRunner();
+_featureRunner = new MyFeatureRunner();
 ```
 2. Add all your features:
 ```csharp
@@ -46,7 +52,7 @@ To create a feature, implement some of the following interfaces:
 * `IEcsPhysicsUpdateFeature`: Contains a `PhysicsUpdate` method called on `EcsFeatureRunner.PhysicsUpdate()`.
 * `IEcsDestroyFeature`: Contains a `Destroy` method called on `EcsFeatureRunner.Destroy()`.
 
-Extend `EcsFeatureRunner` with your own feature types if you need more types of callbacks.
+Extend your implementation of `EcsFeatureRunner` with your own feature types if you need more types of callbacks.
 
 ## Generic features
 Some ECS frameworks share similarities in their API design. They typically offer a class for managing the game world and another class for handling component storage. For instance, both [LeoECS Lite](https://github.com/Leopotam/ecslite) and [Morpeh](https://github.com/scellecs/morpeh) provide `EcsWorld` and `World` as the game world classes, and `IEcsPool` and `Stash` as component storage.
